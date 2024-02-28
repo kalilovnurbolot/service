@@ -23,23 +23,26 @@ class PostController extends Controller
     public function store(Request $request)
     {
         Log::info('Current user:', ['user' => auth()->user()]);
-        $user = Auth::user();
+        $user = auth('api')->user();
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|',
         ]);
         // Проверяем, что пользователь аутентифицирован
-        if ($user) {
-            // Создаем новый пост
-            $post = new Post();
-            $post->name = $validatedData['name']; // Ваша логика для названия поста
-            $post->user_id = $user->id; // Устанавливаем id пользователя в поле user_id
-            $post->save();
-
-            return response()->json($post, 201);
-        } else {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (!$user) {
+            return response()->json([ 'message'=>'вы не авторизованы',401]);
         }
-    }
+            // Создаем новый пост
+
+          
+            
+      
+        $post = new Post();
+        $post->name = $validatedData['name']; // Ваша логика для названия поста
+        $post->user_id = $user->id; // Устанавливаем id пользователя в поле user_id
+        $post->save();
+
+        return response()->json($post, 201);
+        }
 
     /**
      * Display the specified resource.
