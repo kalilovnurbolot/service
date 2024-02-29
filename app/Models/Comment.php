@@ -11,6 +11,9 @@ class Comment extends Model
     public function post(){
         $this->belongsTo(Post::class);
     }
+    public function answer_comment(){
+      return  $this->hasMany(Answer_Comment::class);
+    }
     protected $fillable=[
         'post_id',
         'message',

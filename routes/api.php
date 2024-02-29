@@ -32,16 +32,19 @@ Route::prefix('auth')->middleware('api')->controller(AuthController::class)->gro
 });
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::middleware('auth')->group(function () {
-    Route::post('auth/post', [PostController::class, 'store']);
-   
+Route::prefix('auth')->middleware('api')->controller(PostController::class)->group(function(){
+    Route::post('post','store');
+    Route::get('post/{post}','show');
+    Route::get('posts/all','index');
 });
+
 Route::prefix('auth')->middleware('api')->controller(CommentController::class)->group(function(){
     Route::post('comment','store');
-   
+    Route::get('comment/{comment}','show');
+    Route::get('comments/all','index');
 });
 
 Route::prefix('auth')->middleware('api')->controller(Answer_CommentController::class)->group(function(){
     Route::post('answer','store');
-   
+    Route::get('answer_comment/{answer_comment}','show');
 });

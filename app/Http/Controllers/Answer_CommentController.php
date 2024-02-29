@@ -42,7 +42,7 @@ class Answer_CommentController extends Controller
         'answer'=>$request['answer'],
         'img'=>$filename,
     ]);
-    return response()->json(['message'=>'Urraaa',200]);
+    return response()->json($newComment);
     }
 
     /**
@@ -50,7 +50,8 @@ class Answer_CommentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $answer_Comment=Answer_Comment::find($id);
+        return $answer_Comment->load('comment');
     }
 
     /**

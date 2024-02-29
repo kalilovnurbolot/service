@@ -49,7 +49,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return $post->load('coment');
+        return $post->load('comment');
     }
 
     /**

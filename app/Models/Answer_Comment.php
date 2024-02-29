@@ -15,4 +15,7 @@ class Answer_Comment extends Model
         'user_id',
     ];
 
+    public function comment(){
+     return   $this->belongsTo(Comment::class);
+    }
 }

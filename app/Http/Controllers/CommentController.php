@@ -14,7 +14,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        
+        return Comment::get();
     }
 
     /**
@@ -44,15 +44,15 @@ class CommentController extends Controller
             'message'=>$request['message'],
             'img'=>$filename,
         ]);
-        return response()->json(['message'=>'Urraaa',200]);
+        return response()->json($newComment,200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Comment $comment)
     {
-        //
+        return $comment->load('answer_comment');
     }
 
     /**
