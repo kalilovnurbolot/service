@@ -19,5 +19,6 @@ class Comment extends Model
         'message',
         'img',
         'user_id',
+        'name',
     ];
 }

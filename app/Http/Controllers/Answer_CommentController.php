@@ -38,6 +38,7 @@ class Answer_CommentController extends Controller
 
     $newComment=Answer_Comment::create([
         'user_id'=>$user->id,
+        'name'=>$user->name,
         'comment_id'=>$request['comment_id'],
         'answer'=>$request['answer'],
         'img'=>$filename,
@@ -51,7 +52,7 @@ class Answer_CommentController extends Controller
     public function show(string $id)
     {
         $answer_Comment=Answer_Comment::find($id);
-        return $answer_Comment->load('comment');
+        return $answer_Comment;
     }
 
     /**

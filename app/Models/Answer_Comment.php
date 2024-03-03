@@ -13,6 +13,7 @@ class Answer_Comment extends Model
         'answer',
         'img',
         'user_id',
+        'name',
     ];
 
     public function comment(){

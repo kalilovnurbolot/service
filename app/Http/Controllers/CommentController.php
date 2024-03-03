@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,37 +24,40 @@ class CommentController extends Controller
     public function store(CommentRequest $request)
     {
         $user = auth('api')->user();
-            if(!$user){
-                return response()->json(['message'=>'вы не авторизованы',401]);
-
-            }
-
-            if($request->hasFile('img')){
-                $img=$request->file('img');
-                $filename=time().'.'.$img->getClientOriginalExtension();
-                $path=public_path('uploads/img'.$filename);
-                $img->move(public_path('upload/img'),$filename);
-            }
-            else{
-                $filename=null;
-            }
-
-        $newComment=Comment::create([
-            'user_id'=>$user->id,
-            'post_id'=>$request['post_id'],
-            'message'=>$request['message'],
-            'img'=>$filename,
+        if (!$user) {
+            return response()->json(['message' => 'Вы не авторизованы'], 401);
+        }
+    
+        $filename = null;
+    
+        if ($request->hasFile('img')) {
+            $img = $request->file('img');
+            $filename = time() . '.' . $img->getClientOriginalExtension();
+            $path = public_path('uploads/img/' . $filename); // Добавляем косую черту перед $filename
+            $img->move(public_path('uploads/img'), $filename);
+        }
+    
+        $newComment = Comment::create([
+            'user_id' => $user->id,
+            'name' => $user->name,
+            'post_id' => $request['post_id'],
+            'message' => $request['message'],
+            'img' => $filename,
         ]);
-        return response()->json($newComment,200);
+    
+        return response()->json($newComment, 200);
     }
+    
 
     /**
      * Display the specified resource.
      */
     public function show(Comment $comment)
-    {
-        return $comment->load('answer_comment');
-    }
+{
+   
+    return $comment;
+}
+
 
     /**
      * Update the specified resource in storage.
