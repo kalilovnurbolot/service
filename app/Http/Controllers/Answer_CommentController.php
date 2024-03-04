@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer_Comment;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class Answer_CommentController extends Controller
@@ -10,10 +11,20 @@ class Answer_CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-    }
+
+        /**
+         * Display a listing of the resource.
+         */
+        public function index()
+        {
+            // Получить комментарии, которые не связаны с таблицей answer_comment
+            $comments = Comment::whereNotIn('id', Answer_Comment::pluck('comment_id'))->get();
+            
+            return $comments;
+        }
+    
+    
+
 
     /**
      * Store a newly created resource in storage.
