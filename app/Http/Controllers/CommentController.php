@@ -70,7 +70,12 @@ public function unlike(Comment $comment)
     $comment->decrement('likes_count');
     return response()->json(['message' => 'Comment unliked successfully']);
 }
-
+       public function popular(){
+        $popularComments = Comment::orderBy('likes_count', 'desc')
+        ->take(10) 
+        ->get();
+        return $popularComments;
+       }
     /**
      * Update the specified resource in storage.
      */

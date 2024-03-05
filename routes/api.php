@@ -53,3 +53,4 @@ Route::prefix('auth')->middleware('api')->controller(Answer_CommentController::c
 
 Route::post('comments/{comment}/like', [CommentController::class, 'like']);
 Route::post('comments/{comment}/unlike', [CommentController::class, 'unlike']);
+Route::get('comments/popular', [CommentController::class, 'popular']);
