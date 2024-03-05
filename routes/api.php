@@ -4,6 +4,7 @@ use App\Http\Controllers\Answer_CommentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComentController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProverkaController;
 use App\Http\Controllers\UserController;
@@ -50,7 +51,11 @@ Route::prefix('auth')->middleware('api')->controller(Answer_CommentController::c
     Route::get('comments/unanswered','index');
 
 });
+Route::prefix('auth')->middleware('api')->controller(LikeController::class)->group(function(){
+    Route::post('comment/like','store');
+   
 
-Route::post('comments/{comment}/like', [CommentController::class, 'like']);
-Route::post('comments/{comment}/unlike', [CommentController::class, 'unlike']);
+});
+
+
 Route::get('comments/popular', [CommentController::class, 'popular']);

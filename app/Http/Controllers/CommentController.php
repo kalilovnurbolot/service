@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
+use App\Models\Like;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,11 +15,25 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
+   
     public function index()
     {
-        return Comment::get();
+        $comments = Comment::all();
+    
+        $commentData = [];
+    
+        foreach ($comments as $comment) {
+            $totalLikes = Like::where('comment_id', $comment->id)->where('like', 1)->count();
+            $commentResource=new CommentResource($comment);
+            $commentData[] = [
+                'question' => $commentResource,
+                'total_likes' => $totalLikes
+            ];
+        }
+    
+        return response()->json($commentData);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -52,24 +68,24 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Comment $comment)
+    
+
+public function show(Comment $comment)
 {
     $comment->increment('views');
 
-    return $comment;
+    $totalLikes = Like::where('comment_id', $comment->id)
+        ->where('like', 1)
+        ->count();
+$commentResource=new CommentResource($comment);
+    return response()->json([
+        'question' => $commentResource,
+        'total_likes' => $totalLikes
+    ]);
 }
 
-public function like(Comment $comment)
-{
-    $comment->increment('likes_count');
-    return response()->json(['message' => 'Comment liked successfully']);
-}
 
-public function unlike(Comment $comment)
-{
-    $comment->decrement('likes_count');
-    return response()->json(['message' => 'Comment unliked successfully']);
-}
+
        public function popular(){
         $popularComments = Comment::orderBy('likes_count', 'desc')
         ->take(10) 

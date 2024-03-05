@@ -14,6 +14,10 @@ class Comment extends Model
     public function answer_comment(){
       return  $this->hasMany(Answer_Comment::class);
     }
+    public function like(){
+        return  $this->hasMany(Like::class);
+      }
+
     protected $fillable=[
         'post_id',
         'message',
@@ -21,6 +25,6 @@ class Comment extends Model
         'user_id',
         'name',
         'views',
-        'likes_count',
+       
     ];
 }

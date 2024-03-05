@@ -19,6 +19,10 @@ class CommentResource extends JsonResource
             'id'=>$this->id,
             'user_id'=>$this->user_id,
             'name'=>$this->name,
+            'post_id'=>$this->post_id,
+            'message'=>$this->message,
+            'img'=>$this->img,
+            'views'=>$this->views
 
         ];
     }
