@@ -50,3 +50,6 @@ Route::prefix('auth')->middleware('api')->controller(Answer_CommentController::c
     Route::get('comments/unanswered','index');
 
 });
+
+Route::post('comments/{comment}/like', [CommentController::class, 'like']);
+Route::post('comments/{comment}/unlike', [CommentController::class, 'unlike']);

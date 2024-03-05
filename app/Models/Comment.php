@@ -20,5 +20,7 @@ class Comment extends Model
         'img',
         'user_id',
         'name',
+        'views',
+        'likes_count',
     ];
 }

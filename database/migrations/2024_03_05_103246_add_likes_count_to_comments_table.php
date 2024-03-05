@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('views', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(User::class)->constrained()->onDelete('set null');
-            $table->boolean('is_viewed')->default(false);
-            $table->timestamps();
+        Schema::table('comments', function (Blueprint $table) {
+            $table->unsignedInteger('likes_count')->default(0);
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('views');
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropColumn('likes_count');
+        });
     }
 };

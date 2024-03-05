@@ -54,10 +54,22 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
 {
-   
+    $comment->increment('views');
+
     return $comment;
 }
 
+public function like(Comment $comment)
+{
+    $comment->increment('likes_count');
+    return response()->json(['message' => 'Comment liked successfully']);
+}
+
+public function unlike(Comment $comment)
+{
+    $comment->decrement('likes_count');
+    return response()->json(['message' => 'Comment unliked successfully']);
+}
 
     /**
      * Update the specified resource in storage.
