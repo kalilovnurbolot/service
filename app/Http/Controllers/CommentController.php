@@ -15,13 +15,13 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-   
+
     public function index()
     {
         $comments = Comment::all();
-    
+
         $commentData = [];
-    
+
         foreach ($comments as $comment) {
             $totalLikes = Like::where('comment_id', $comment->id)->where('like', 1)->count();
             $commentResource=new CommentResource($comment);
@@ -30,10 +30,10 @@ class CommentController extends Controller
                 'total_likes' => $totalLikes
             ];
         }
-    
+
         return response()->json($commentData);
     }
-    
+
     /**
      * Store a newly created resource in storage.
      */
@@ -43,16 +43,16 @@ class CommentController extends Controller
         if (!$user) {
             return response()->json(['message' => 'Вы не авторизованы'], 401);
         }
-    
+
         $filename = null;
-    
+
         if ($request->hasFile('img')) {
             $img = $request->file('img');
             $filename = time() . '.' . $img->getClientOriginalExtension();
             $path = public_path('uploads/img/' . $filename); // Добавляем косую черту перед $filename
             $img->move(public_path('uploads/img'), $filename);
         }
-    
+
         $newComment = Comment::create([
             'user_id' => $user->id,
             'name' => $user->name,
@@ -60,15 +60,15 @@ class CommentController extends Controller
             'message' => $request['message'],
             'img' => $filename,
         ]);
-    
+
         return response()->json($newComment, 200);
     }
-    
+
 
     /**
      * Display the specified resource.
      */
-    
+
 
 public function show(Comment $comment)
 {
@@ -86,12 +86,18 @@ $commentResource=new CommentResource($comment);
 
 
 
-       public function popular(){
-        $popularComments = Comment::orderBy('likes_count', 'desc')
-        ->take(10) 
-        ->get();
+    public function popular(Comment $comment) {
+        $totalLikes = Like::where('like', 1)->count(); // Общее количество лайков для всех комментариев
+
+        $popularComments = Comment::withCount('likes') // Предварительно загружаем количество лайков для каждого комментария
+        ->orderByDesc('likes_count') // Сортируем комментарии по количеству лайков в порядке убывания
+        ->take(10) // Ограничиваем результат до 10 комментариев
+        ->get(); // Получаем популярные комментарии
+
         return $popularComments;
-       }
+
+    }
+
     /**
      * Update the specified resource in storage.
      */
