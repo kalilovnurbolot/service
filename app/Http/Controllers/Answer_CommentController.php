@@ -19,11 +19,11 @@ class Answer_CommentController extends Controller
         {
             // Получить комментарии, которые не связаны с таблицей answer_comment
             $comments = Comment::whereNotIn('id', Answer_Comment::pluck('comment_id'))->get();
-            
+
             return $comments;
         }
-    
-    
+
+
 
 
     /**
@@ -60,11 +60,24 @@ class Answer_CommentController extends Controller
     /**
      * Display the specified resource.
      */
+
+
     public function show(string $id)
     {
-        $answer_Comment=Answer_Comment::find($id);
-        return $answer_Comment;
+        // Найти комментарий по его ID
+        $comment = Comment::find($id);
+
+        // Проверить, существует ли комментарий
+        if (!$comment) {
+            return response()->json(['error' => 'Комментарий не найден'], 404);
+        }
+
+        // Получить ответы, связанные с комментарием
+        $answer_Comment = Answer_Comment::where('comment_id', $comment->id)->get();
+
+        return response()->json($answer_Comment);
     }
+
 
     /**
      * Update the specified resource in storage.

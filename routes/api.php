@@ -47,13 +47,13 @@ Route::prefix('auth')->middleware('api')->controller(CommentController::class)->
 
 Route::prefix('auth')->middleware('api')->controller(Answer_CommentController::class)->group(function(){
     Route::post('answer','store');
-    Route::get('answer_comment/{answer_comment}','show');
+    Route::get('answer_comment/{id}','show');
     Route::get('comments/unanswered','index');
 
 });
 Route::prefix('auth')->middleware('api')->controller(LikeController::class)->group(function(){
     Route::post('comment/like','store');
-   
+
 
 });
 
